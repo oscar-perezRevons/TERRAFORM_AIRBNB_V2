@@ -1,0 +1,104 @@
+{
+	"name": "df_db_airbnb",
+	"properties": {
+		"folder": {
+			"name": "DB"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "airbnb_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tbl_airbnb",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          City as string,",
+				"          Price as double,",
+				"          Day as string,",
+				"          {Room Type} as string,",
+				"          {Shared Room} as boolean,",
+				"          {Private Room} as boolean,",
+				"          {Person Capacity} as integer,",
+				"          Superhost as boolean,",
+				"          {Multiple Rooms} as integer,",
+				"          Business as integer,",
+				"          {Cleanliness Rating} as integer,",
+				"          {Guest Satisfaction} as integer,",
+				"          Bedrooms as integer,",
+				"          {City Center (km)} as double,",
+				"          {Metro Distance (km)} as double,",
+				"          {Attraction Index} as double,",
+				"          {Normalised Attraction Index} as double,",
+				"          {Restraunt Index} as double,",
+				"          {Normalised Restraunt Index} as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          city as string,",
+				"          price as double,",
+				"          day as string,",
+				"          room_type as string,",
+				"          shared_room as boolean,",
+				"          private_room as boolean,",
+				"          person_capacity as integer,",
+				"          superhost as boolean,",
+				"          multiple_rooms as integer,",
+				"          business as integer,",
+				"          cleanliness_rating as integer,",
+				"          guest_satisfaction as integer,",
+				"          bedrooms as integer,",
+				"          city_center as double,",
+				"          metro_distance as double,",
+				"          attraction_index as double,",
+				"          restraunt_index as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          city = City,",
+				"          price = Price,",
+				"          day = Day,",
+				"          room_type = {Room Type},",
+				"          shared_room = {Shared Room},",
+				"          private_room = {Private Room},",
+				"          person_capacity = {Person Capacity},",
+				"          superhost = Superhost,",
+				"          multiple_rooms = {Multiple Rooms},",
+				"          business = Business,",
+				"          cleanliness_rating = {Cleanliness Rating},",
+				"          guest_satisfaction = {Guest Satisfaction},",
+				"          bedrooms = Bedrooms,",
+				"          city_center = {City Center (km)},",
+				"          metro_distance = {Metro Distance (km)},",
+				"          attraction_index = {Attraction Index},",
+				"          restraunt_index = {Restraunt Index}",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
